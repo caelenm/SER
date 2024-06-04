@@ -2,3 +2,5 @@ os
 librosa
 numpy
 matplotlib
+keras
+tensorflow

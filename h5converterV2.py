@@ -3,18 +3,19 @@ import librosa
 import numpy as np
 import matplotlib.pyplot as plt
 import tqdm
+
 #AI tools were used to help create the following code
 
 # Path to the input audio files
-audio_files_dir = '/home/user/VQ-MAE-S-code/config_speech_vqvae/dataset/Audio_Speech_Actors_01-24'
+#audio_files_dir = '/home/Documents/VQ-MAE-S-code/config_speech_vqvae/dataset/Audio_Speech_Actors_01-24'
 
 # Path to the output spectrograms
-spectrograms_dir = '/home/user/VQ-MAE-S-code/config_speech_vqvae/dataset/spectrograms'
+#spectrograms_dir = '/home/Documents/VQ-MAE-S-code/config_speech_vqvae/dataset/spectrograms'
 
 
-def convert_audio_to_spectrogram(audio_files_dir, spectrograms_dir):
+def convert_audio_to_spectrogram(audio_files_dir, target_directory):
     # Ensure the output directory exists
-    os.makedirs(spectrograms_dir, exist_ok=True)
+    #os.makedirs(spectrograms_dir, exist_ok=True)
 
     # Get a list of all .wav files in the audio files directory
     wav_files = [f for f in os.listdir(audio_files_dir) if f.endswith('.wav')]
@@ -45,7 +46,7 @@ def convert_audio_to_spectrogram(audio_files_dir, spectrograms_dir):
                 plt.axis('off')
 
                 # Construct the full path to the output .svg file
-                svg_file = os.path.join(spectrograms_dir, os.path.splitext(filename)[0] + '.svg')
+                svg_file = os.path.join(target_directory, os.path.splitext(filename)[0] + '.svg')
 
                 # Save the plot to the spectrograms directory
                 plt.savefig(svg_file, format='svg', bbox_inches='tight', pad_inches=0)

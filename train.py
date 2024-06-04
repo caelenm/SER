@@ -5,13 +5,18 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
 
 # Set the path to the spectrograms directory
-spectrograms_dir = '/home/user/VQ-MAE-S-code/config_speech_vqvae/dataset/spectrograms'
+#spectrograms_dir = '/home/user/VQ-MAE-S-code/config_speech_vqvae/dataset/spectrograms'
 
-# Split the data into training and testing sets (80% training, 20% testing)
-train_test_split_percentage = 0.8
-train_data, test_data = train_test_split(os.listdir(spectrograms_dir), test_size=1-train_test_split_percentage, random_state=42)
+# Check if the directory is empty
+# if not os.listdir(spectrograms_dir):
+#     raise ValueError(f"The directory {spectrograms_dir} is empty. Please check the path.")
 
-def train():
+# # Split the data into training and testing sets (80% training, 20% testing)
+# train_test_split_percentage = 0.8
+# train_data, test_data = train_test_split(os.listdir(spectrograms_dir), test_size=1-train_test_split_percentage, random_state=42)
+
+
+def train(train_data_dir, test_data_dir):
 
     # Create an ImageDataGenerator to preprocess the data
     datagen = ImageDataGenerator(rescale=1./255)
@@ -22,19 +27,19 @@ def train():
 
     # Generate training and testing data using the ImageDataGenerator
     train_generator = datagen.flow_from_directory(
-        spectrograms_dir,
+        train_data_dir,
         target_size=target_size,
         class_mode='categorical',
-        batch_size=batch_size,
-        subset='training'
+        batch_size=batch_size
+        #subset='training'
     )
 
     test_generator = datagen.flow_from_directory(
-        spectrograms_dir,
+        test_data_dir,
         target_size=target_size,
         class_mode='categorical',
-        batch_size=batch_size,
-        subset='validation'
+        batch_size=batch_size
+        #subset='validation'
     )
 
     # Build the CNN model
@@ -45,7 +50,7 @@ def train():
     model.add(MaxPooling2D((2, 2)))
     model.add(Flatten())
     model.add(Dense(64, activation='relu'))
-    model.add(Dense(len(train_data), activation='softmax'))
+    model.add(Dense(8, activation='softmax'))
 
     # Compile the model
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
@@ -61,7 +66,7 @@ def train():
     # Save the trained model to a file
     import datetime
     now = datetime.datetime.now()
-    model_path = f'trained/model_{now.strftime("%Y%m%d%H%M%S")}.h5'
+    model_path = f'trained/model_{now.strftime("%Y%m%d%H%M%S")}.tf'
     model.save(model_path)
     print(f'Model saved to {model_path}')
 

@@ -16,7 +16,7 @@ def sort_files_by_mood(source_directory, target_directory_sorted):
 
     # Iterate over files in the specified directory
     for filename in os.listdir(source_directory):
-        if filename.endswith('.svg'):
+        if filename.endswith('.png'):
             # Extract the mood from the filename
             mood_number = filename.split('-')[2]
 
